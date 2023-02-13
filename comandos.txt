@@ -1,0 +1,12 @@
+git init= crear repositorio. (.git)
+git status= estatus de los archivos.
+git add <file_name>= agregar archivos al rastreo.
+git rm --cached <file_name> = para quitar cambios del git add.
+git commit -m = agregar cambios al repositorio.
+git config --global = configuraciones globales
+git config --list = ver configuraciones
+git config --list --show-origin = ver donde se encuentra las configuraciones
+git log <file_name> = para ver los commits de los archivos
+git diff <id commit> = sirve para comparar los cambios de un commit con otro,
+el orden es importante.
+
