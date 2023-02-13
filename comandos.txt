@@ -9,4 +9,10 @@ git config --list --show-origin = ver donde se encuentra las configuraciones
 git log <file_name> = para ver los commits de los archivos
 git diff <id commit> = sirve para comparar los cambios de un commit con otro,
 el orden es importante.
-
+git checkout <Id_commit> = sirve para cambiar a un commit 
+especifico.
+git branch <name_branch> = sirve para crear una rama desde 
+el ultimo commit.
+git merge <name_branch> = sirve para traer cambios de una 
+rama a la actual.
+ 
