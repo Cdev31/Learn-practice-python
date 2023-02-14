@@ -15,4 +15,10 @@ git branch <name_branch> = sirve para crear una rama desde
 el ultimo commit.
 git merge <name_branch> = sirve para traer cambios de una 
 rama a la actual.
- 
+git config --global init.defaultBranch main = rama main por 
+defecto.
+git branch -M main = pasar todo los cambios de branch a main 
+git remote add name_origin url = este sirve para agregar un repositorio remoto
+git remote -v = sirve para enlistar los repositorios remotos
+git pull origin master --allow-unrelated-histories = sirve para traer cambios del repositorio con historia no relacionadas
+git push origin master = sirve para mandar datos en tu repositorio remoto
