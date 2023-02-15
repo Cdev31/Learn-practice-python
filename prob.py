@@ -11,3 +11,4 @@ num2 = int(input("agrege el segundo numero"))
 num3 = int(input("agrege el tercer numero"))   
 
 print(f"su suma es de {suma(num1,num2,num3)}")
+como
