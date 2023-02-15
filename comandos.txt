@@ -27,3 +27,7 @@ eval SSH_AUTH_SOCK=/tmp/ssh-5DSDwJamIEwH/agent.49; export SSH_AUTH_SOCK; SSH_AGE
 ssh-add /home/kalet/.ssh/id_rsa = para agregar la llave al entorno
 git remote set-url url_name or name newUrl = esta forma cambia la url a la que se le hace push
 git log --all --graph --decorate --oneline = mejorar como se presentan los logs
+git tag o git show-ref --tags = lista los tags
+git tag -d nombre-del-tag = borra del repositorio local el tag
+git push origin --tags = mandar tags a el repositorio remoto
+git push origin :refs/tags/nombre-del-tag == para borrar el tag en el repositorio remoto despues de borralo en local
