@@ -446,7 +446,7 @@ let x = {a:1,b:2,c:3}
 
 console.log(getProperty(x,"a"))
 
--------------------Type KeyOf-----------------
+---------------------Type KeyOf-------------------
 
 El tipo keyOf toma un tipo de objeto y produce una cadena o union literal numerica 
 de sus claves.
@@ -472,27 +472,228 @@ function isValidAge(user:User, key: UserKeys,value: any):boolean{
 
 console.log(isValidAge(user,'age',30))
 
--------------Conditional Type----------------
+-------------------Tipos indexados-------------------
+
+este tipo verific el retorno y el tipo de indice de un objeto,es  muy util para 
+verificar acceso.
+
+type StringDict ={
+    [index:number]: string
+}
+
+const dict: StringDict ={
+    1:"sl",
+    2:"sl"
+}
+
+------------------Conditional Type-------------------
 
 los tipos condicionales toman la siguiente forma: 
 SomeType extends OtherType ? TrueType : FalseType;
 
-interface IdLabel {
-    id: number
+interface Admin {
+   isAdmin: true
 }
 
-interface NameLabel{
-    name: string
+interface NormalUser{
+   isAdmin: false
 }
 
-type NameorId<T extends number | string> = T extends number ? IdLabel : NameLabel
+type User = Admin | NormalUser
 
-function createLabel<T extends number | string>(idOrName:T): NameorId<T>{
- throw "unimplemented"
+type CanEdit<T> = T extends {isAdmin:false} ? true : false
+
+function editPost<T extends  User>(user:T,postId:number){
+  if(user.isAdmin){
+    return false
+  }
+  return true
 }
+
+const user: User = {
+    isAdmin: false
+}
+
+console.log(editPost(user,2))
 
 --Restricciones de tipo condicional.
 
+estas son utiles para especificar que una funcion u objeto puede ser 
+de varios tipos pero no puede ser los 2 a la vez.
+
+type HashLength<T>= T extends {length:number} ? true:false
+
+
+--Tipos distributivos condicionales.
+
+Se dice que son distribuidos cuando la condicion se aplica a cada 
+miembro de una union de tipos.
+
+type MyType<T> = T extends string ? number : boolean;
+
+type Result = MyType<"hello" | true | 42>; 
+// Result es (number | boolean) | boolean | boolean
+
+-------------------Mapped Type---------------
+
+Los Mapped types son un tipo de dato que permite crear un nuevo 
+tipo apartir de un tipo existente.
+
+type OptionalReadOnly<T> = {
+    readonly [P in keyof T]+?: T[P]
+}
+
+interface Person {
+    name: string;
+    age: number;
+}
+
+const partialPerson:OptionalReadOnly<Person> ={
+    name: "juan carlos",
+}
+
+console.log(partialPerson)
+
+Hay cuatro modificadores de mapeo: readonly, ?, + y -.
+
+readonly hace que las propiedades resultantes sean de sólo lectura.
+? hace que las propiedades resultantes sean opcionales.
++ indica que se deben agregar propiedades adicionales al tipo base.
+- indica que se deben eliminar propiedades del tipo base.
+
+--Uso de as: Este sirve para castear,lo que puede ser bueno para crear otro 
+tipo diferente.
+
+interface Gemoetria {
+    lados: number
+}
+
+interface Triangulo extends Gemoetria {
+    base: number
+    altura: number
+}
+
+interface Cuadrado extends Gemoetria{
+    lado: number
+}
+
+function proce(g:Gemoetria){
+    if(g.lados == 4){
+        let cuadrado = g as Cuadrado
+        cuadrado.lado = 4
+    }
+}
+
+
+Nota: podes usarlos con condicionales.
+
+
+----Tipos de plantillas literales.
+
+Los tipos de plantilla se define con `${}` esto sirve para tipar lo que seria
+una cadena de string.
+
+type Email = `${string}@${'gmail' | 'Hotmail'}.${'com' | 'net' | 'org'}`
+
+const login =(email:Email,pass:string)=>{
+    if(email){
+        return email
+    }
+}
+
+console.log(login('kalet@gmail.com','123453'))
+
+----Uniones de cuerdas en tipos.
+
+Las uniones de cadenas (string unions) en TypeScript se refieren a la combinación de dos o más tipos de cadena en una sola unión. 
+
+type Gender = 'male' | 'female' | 'non-binary';
+
+----Inferencia con literales de plantilla.
+
+La inferencia con literales de plantilla en TypeScript es una característica que permite que los tipos de variables, 
+parámetros y resultados de funciones se infieran en tiempo de compilación utilizando literales de plantilla.
+
+function getDate(date: `${number}/${'Mar' | 'Feb'}/${number}`){
+    console.log(date.split('/')[1])
+}
+
+
+----Manipulacion de cadenas intrisecas.
+
+Este sirven para definir cadenas con metodos nativos de javascript a utilizar como
+length, uppercase,etc para crear una cadena que se evalue en tiempo de compilacion.
+
+Uppercase<StringType>
+Convierte cada carácter de la cadena a la versión en mayúsculas.
+
+Uppercase<StringType>
+Convierte cada carácter de la cadena a la versión en mayúsculas.
+
+Lowercase<StringType>
+Convierte cada carácter de la cadena al equivalente en minúsculas.
+
+Capitalize<StringType>
+Convierte el primer carácter de la cadena en un equivalente en mayúsculas.
+
+Uncapitalize<StringType>
+Convierte el primer carácter de la cadena en un equivalente en minúsculas.
+
+
+type ZipCode = `${string & Length<5>}`
+
+type Greeting = string
+
+type Name = Uppercase<Greeting>
+
+const saludo:Name = "LISTO"
+
+console.log(saludo)
+
+
+-------------------Utility Types--------------------
+
+Los utility types son un conjunto de tipos predefinidos que proporcionan 
+funcionalidades utiles para trabajar con tipos,ya sea cambiando su estructura 
+o creando uno nuevo apartir de ellos.
+
+--Awaited<Type>:
+
+
+
+--Partial<Type>:
+
+--Required<Type>:
+
+--Readonly<Type>:
+
+--Record<Keys,Type>:
+
+--Pick<Type,Keys>:
+
+--Omit<Type,keys>:
+
+--Exclude<UnionTyoe,ExcludeMembers>:
+
+--Extract<Type,Union>:
+
+--NonNullable<Type>:
+
+--Parameters<Type>:
+
+--ConstructorParameters<Type>:
+
+--ReturnType<Type>:
+
+--InstanceType<Type>:
+
+--ThisParameterType<Type>:
+
+--OmitThisParameter<Type>:
+
+--OmitThisParameter<Type>:
+
+--ThisType<Type>:
 
 
 
