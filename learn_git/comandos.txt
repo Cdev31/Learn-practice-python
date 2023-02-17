@@ -17,6 +17,7 @@ git merge <name_branch> = sirve para traer cambios de una
 rama a la actual.
 git config --global init.defaultBranch main = rama main por 
 defecto.
+
 git branch -M main = pasar todo los cambios de branch a main 
 git remote add name_origin url = este sirve para agregar un repositorio remoto
 git remote -v = sirve para enlistar los repositorios remotos
@@ -26,8 +27,12 @@ ssh-keygen -t rsa -b 4096 -C kalet.svdev@gmail.com = crea una llave ssh
 eval SSH_AUTH_SOCK=/tmp/ssh-5DSDwJamIEwH/agent.49; export SSH_AUTH_SOCK; SSH_AGENT_PID=50; export SSH_AGENT_PID; echo Agent pid 50; = para ver si el servidor ssh esta corriendo
 ssh-add /home/kalet/.ssh/id_rsa = para agregar la llave al entorno
 git remote set-url url_name or name newUrl = esta forma cambia la url a la que se le hace push
+<<<<<<< HEAD:comandos.txt
 git log --all --graph --decorate --oneline = mejorar como se presentan los logs
 git tag o git show-ref --tags = lista los tags
 git tag -d nombre-del-tag = borra del repositorio local el tag
 git push origin --tags = mandar tags a el repositorio remoto
 git push origin :refs/tags/nombre-del-tag == para borrar el tag en el repositorio remoto despues de borralo en local
+=======
+git log --all --graph --decorate --oneline = mejora la forma en como se presentan los logs
+>>>>>>> 00403c4adb101531c100d9be84c7b8a4ad34fb90:learn_git/comandos.txt
