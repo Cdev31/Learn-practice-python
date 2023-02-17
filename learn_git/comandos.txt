@@ -446,7 +446,7 @@ let x = {a:1,b:2,c:3}
 
 console.log(getProperty(x,"a"))
 
--------------------Type KeyOf-----------------
+---------------------Type KeyOf-------------------
 
 El tipo keyOf toma un tipo de objeto y produce una cadena o union literal numerica 
 de sus claves.
@@ -472,7 +472,7 @@ function isValidAge(user:User, key: UserKeys,value: any):boolean{
 
 console.log(isValidAge(user,'age',30))
 
----------------Tipos indexados-----------------
+-------------------Tipos indexados-------------------
 
 este tipo verific el retorno y el tipo de indice de un objeto,es  muy util para 
 verificar acceso.
@@ -486,7 +486,7 @@ const dict: StringDict ={
     2:"sl"
 }
 
--------------Conditional Type----------------
+------------------Conditional Type-------------------
 
 los tipos condicionales toman la siguiente forma: 
 SomeType extends OtherType ? TrueType : FalseType;
@@ -649,6 +649,54 @@ type Name = Uppercase<Greeting>
 const saludo:Name = "LISTO"
 
 console.log(saludo)
+
+
+-------------------Utility Types--------------------
+
+Los utility types son un conjunto de tipos predefinidos que proporcionan 
+funcionalidades utiles para trabajar con tipos,ya sea cambiando su estructura 
+o creando uno nuevo apartir de ellos.
+
+--Awaited<Type>:
+
+
+
+--Partial<Type>:
+
+--Required<Type>:
+
+--Readonly<Type>:
+
+--Record<Keys,Type>:
+
+--Pick<Type,Keys>:
+
+--Omit<Type,keys>:
+
+--Exclude<UnionTyoe,ExcludeMembers>:
+
+--Extract<Type,Union>:
+
+--NonNullable<Type>:
+
+--Parameters<Type>:
+
+--ConstructorParameters<Type>:
+
+--ReturnType<Type>:
+
+--InstanceType<Type>:
+
+--ThisParameterType<Type>:
+
+--OmitThisParameter<Type>:
+
+--OmitThisParameter<Type>:
+
+--ThisType<Type>:
+
+
+
 
 ---------------Yargs---------------
 
