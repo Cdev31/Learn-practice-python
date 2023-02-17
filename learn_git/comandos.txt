@@ -1,30 +1,661 @@
-git init= crear repositorio. (.git)
-git status= estatus de los archivos.
-git add <file_name>= agregar archivos al rastreo.
-git rm --cached <file_name> = para quitar cambios del git add.
-git commit -m = agregar cambios al repositorio.
-git config --global = configuraciones globales
-git config --list = ver configuraciones
-git config --list --show-origin = ver donde se encuentra las configuraciones
-git log <file_name> = para ver los commits de los archivos
-git diff <id commit> = sirve para comparar los cambios de un commit con otro,
-el orden es importante.
-git checkout <Id_commit> = sirve para cambiar a un commit 
-especifico.
-git branch <name_branch> = sirve para crear una rama desde 
-el ultimo commit.
-git merge <name_branch> = sirve para traer cambios de una 
-rama a la actual.
-git config --global init.defaultBranch main = rama main por 
-defecto.
+------------typescript-------------
 
-git branch -M main = pasar todo los cambios de branch a main 
-git remote add name_origin url = este sirve para agregar un repositorio remoto
-git remote -v = sirve para enlistar los repositorios remotos
-git pull origin master --allow-unrelated-histories = sirve para traer cambios del repositorio con historia no relacionadas
-git push origin master = sirve para mandar datos en tu repositorio remoto
-ssh-keygen -t rsa -b 4096 -C kalet.svdev@gmail.com = crea una llave ssh
-eval SSH_AUTH_SOCK=/tmp/ssh-5DSDwJamIEwH/agent.49; export SSH_AUTH_SOCK; SSH_AGENT_PID=50; export SSH_AGENT_PID; echo Agent pid 50; = para ver si el servidor ssh esta corriendo
-ssh-add /home/kalet/.ssh/id_rsa = para agregar la llave al entorno
-git remote set-url url_name or name newUrl = esta forma cambia la url a la que se le hace push
-git log --all --graph --decorate --oneline = mejora la forma en como se presentan los logs
+podemos transpilar codigo typescript a javascript, pero
+podemos usar ts-node para ejecutar sin necesidad de transpilar
+
+npx tsc --init: inicializar typescript con el archivo tsconfig.
+
+tsc: es el compilador de typescript el cual ejecuta el archivo .ts con el comando:
+ejecucion global: tsc name.ts
+ejecucion local: npx tsc name.tx
+
+hay que recalcar que este ejecuta el archivo en busca de errores,al no 
+enontrarlos no genera una salida,sino un archivo .js para ser ejecutado.
+
+noEmitOnError: evita que no se cree el archivo .js sin dejar que se emitan los errores.
+
+noImplicitAny: genera error cuando implicitamente se deduzca un tipo Any.
+
+strictNullCheks: hace que los tipos null y undefined sean mas explicitos en su tipado.
+
+--------TIPOS COTIDIANOS--------
+
+primitivas: -String Type.
+            -Number Type.
+            -Boolean Type.
+
+Arrays: -number[] o Array<number>
+
+Any type: este es un tipo que desactiva el linteo de tipos de 
+typescript.
+
+
+Nota: 'normalmente typescript infiere desde un inicio los tipos,los cuales no esten definidos explicitamente'
+
+funciones: cuando se especifica el tipo de dato en los parametros el linteo hara inferencia
+en los argumentos mandados en la funcion.
+
+function getValue(num: str): str{}: eso ultimo fue el tipo de retorno.
+
+tipificacion contextual: esta se da en las funciones anonimas las cuales no tienen un tipo
+explicito sino que por el contexto donde se usa,typescript infiere su tipo.
+
+Object Type: se pueden mandar objetos literales como argumentos de funciones:
+
+funcion point(pt:{x:number;y:number}): number {}
+
+Nota:sus parametros pueden ser opcionales,para eso agrege al final ?:
+
+const user = (obj: {name: string, adress?:string})=>{}
+
+
+---------UNION TYPES---------
+
+typescript permite crear nuevos tipos apartir de tipos existentes
+utilizando gran variedad de operadores.
+
+combinacion de tipos: 
+
+let date: string | date = ''
+
+Nota: en funciones typescript solo permite operaciones,si las operaciones
+son validas para todos los tipos.
+
+function printId(id: number | string) {
+  if (typeof id === "string") {
+    // In this branch, id is of type 'string'
+    console.log(id.toUpperCase());
+  } else {
+    // Here, id is of type 'number'
+    console.log(id);
+  }
+}
+
+----------ALIAS TYPE----------
+
+Es comun querer usar un tipo mas de una vez,entonces podemos hacer 
+uso de alias los cuales nos ayudan a reutilizar los tipos.
+
+type Point = {
+    x: number;
+    y: number
+}
+
+function point(pt: Point){}
+
+Nota: 'Puedes usar un alias para especificar cualquier tipo'
+
+
+----------INTERFACES-----------
+
+Estas se utilizan para definir las estructura de los objetos,propiedades entre
+otras.
+
+interface Point {
+  x: number;
+  y: number;
+}
+ 
+function printCoord(pt: Point) {
+  console.log("The coordinate's x value is " + pt.x);
+  console.log("The coordinate's y value is " + pt.y);
+}
+ 
+se pueden heredar de interfaces y se pueden agregar nuevos campos en las interfaces
+sin tener problemas de tipado.
+
+
+-----------ASERCIONES-----------
+
+Es una forma de decirle a typescript que confie en uno para el que haga su 
+verificacion de tipos con respecto a lo que yo le diga que es un elemento.
+
+const {} = obj as number
+
+
+---------LITERAL TYPES---------
+
+Sirven para especificar un conjunto limitado de valores predeterminados,lo cual 
+ayuda con el tipeo especifico.
+
+type DAY = 'Lunes' | 'Martes' | 'Miercoles'
+
+-----NULL AND UNDEFINED TYPE-------
+
+con la opcion strictNullCheks en off,typescript se comporta como los lenguajes que 
+no tienen validacion de undefined y null,por ende es manejado implicitamente
+
+signo de asercion no nula (!):
+
+let x: string | null = someValue;
+let y = x!.length;
+
+-------Enums---------
+
+forma de definir valores predeterminados los cuales pueden ser accedidos por el 
+metodo .
+
+enum DAY = {
+  LUNES = 'MONDAY',
+  MARTES= 'WENDSDAY'
+}
+
+NOTA: 'Typescript verifica todo tipo de datos,hasta los menos comunes como bigInt y symbol'
+
+
+------------NARROWING---------
+
+Es un proceso en typescript donde el compilador restringe el tipo 
+de una variable basado en la informacion disponible en 
+tiempo de compilacion.
+
+let x: number | string =4;
+if (typeof x === 'number'){
+  x='hello'
+}
+
+
+-Estrechamiento de veracidad: esta es un tipo de narrowing donde el compilador 
+restringe el tipo de una variable basado en una evalucacion boleana, este puede ser mas util con 
+los valores null y undefined
+
+-Estrechamiento con in: este verifica si existe una clave en un objeto.
+
+const obj = {a: 1, b: 2}
+if ('a' in obj){
+  //retorna true o false
+}
+
+-estrechamiento por instanceof: estte verifica que un objeto sea instancia de una clase o prototipo.
+
+NOTA: 'Typescript puede inferir en el tipo de una variable respecto a la primera declaracion de tipo de la variable'
+
+-Predicado de tipos: en typescript son funciones que toman un tipo 
+como argumento y devuelven un valor booleano que indica si el tipo 
+cumple con cierts condiciones.Se utilizan para escribir tipos personalizados que 
+se ajustan a una determinada forma o comportamiento.
+
+type IsNumber = (x: any) => x is number;
+const isNumber: IsNumber = (x) => typeof x === 'number';
+
+let x = 42;
+if (isNumber(x)) {
+  console.log(x.toFixed(2)); // 42.00
+}
+
+
+--Sindicatos discriminados--
+
+Los sindicatos discriminados son una forma de representar diferentes tipos de 
+datos en una sola union de tipos, un ejemplo podria ser polimorfismo,podemos crear 
+un tipo forma donde esten adentro las propiedades de cada tipo ya sea regtangulo,cuadrado o circulo.
+
+type Figure = {
+  figure: 'Cuadrado',
+  width: 2
+} | {
+  figure: 'regtangle'.
+  width: 4,
+  height: 9
+} | {
+  figure: 'cicle',
+  radie: 32
+}
+
+function getArea(s: Figure){
+  switch(s.figure){
+    case "cuadrado":
+         return s.width * 4
+    case "regtangle":
+         return s.width * s.height     
+  }
+}
+
+--Never type:
+
+Es un tipo el cual define que no se ejecutara o que no tiene un final definido,por ejemplo
+un bicle while,una excepcion entre otras.
+
+----------Funciones---------
+
+-Firma de funciones: son la forma en como establecer el tipo de parametros y el tipo de retorno de una funcion,
+se puede tambien hacer un tipo de funcion que defina propiedades y crear su firma.
+
+type paramUser = (password:string,name:string)=>string
+
+
+let funts:paramUser = (name,password)=>{
+    return `${password + name}`
+}
+
+console.log(funts('kalet','ajkls'))
+
+-Funciones genericas: se utilizan genericos los cuales ayudan a especificar que se pueden
+tener valores de varios tipos,esto trae ventajas,pero desventajas si no se utilizan bien,
+recalar que typescript infiere aveces los tipos generico a la hora de usarlos.
+
+
+
+type Obj = {
+    name: string,
+    age:number,
+    message:string
+}
+
+function isBigObj<Type extends Obj>(obj:Type):Type{
+        if(obj.age > 18){
+            return obj
+        }else{
+          return obj
+        }
+}
+
+NOTA: 'Cuando se para un generico que extiende de un tipo objeto y retorna el tipo generico
+se debe saber que el retorno sera el objeto de tipo extendido completo'
+
+-Sobrecarga de funciones y firma de ellas: la sobrecarga de funciones es una forma de no utilizar 
+genericos,bueno los genericos ayudan a evitar usar sobrecarga de funciones,ya que la sobrecarga es utilizada 
+para una funcion que se comporta de diferentes formas con respecto a sus parametros,hay que tener en cuenta 
+que se debe seguir la firma de funciones,no puede ser cambiada ya que esto dara un error.
+
+function fn(x: string): string;
+// Return type isn't right
+function fn(x: number): boolean;
+
+
+-Tipo void: especifica que la funcion no devuelve nada por defecto,este es diferente a undefined.
+-Tipo object: tipo especial que se refiere a cualquier valor que no sea un primitivo.
+-Tipo unknown: este tipo es como any solo que este no deja hacer ninguna operacion en el valor hasta que se especifique su tipo.
+-Tipo never: representa tipos no observables, en un tipo de retorno,osea una excepcion o finalizacion del programa.
+-Tipo function: este tipo hace uso de bind,call y apply que son metodos que manipulan el objeto global Function.
+ 
+
+--------------------------Tipos de objeto--------------------
+
+Se puede hacer de 2 formas con Type, con interface o siendo recibida como parametro en una funcion
+
+--Modificadores de propiedad: Cada tipo de objeto puede especificar un par de 
+cosas: el tipo,si es opcional y si se puede escribir en la propiedad.
+
+interface opt {
+  shape: shape;
+  xPos?: number
+}
+
+El signo ? indica que la propiedad es opcional,tomando en cuenta que strictNullCheck 
+al leer esta propiedad dira que es potencialmente undefined.
+
+
+--Propiedad solo de lectura: Esta propiedad no se puede escribir durante la verificacion de tipos.
+
+interface SomeType{
+  readonly id: string;
+}
+
+hay que resaltar que readonly no es inmutable en si solo implica que la propiedad no se escrita de nuevo.
+
+--Indice de firmas: Estas tipan lo que son las claves y sus valores, para que puedan ser declaradas como 
+indices de tipo especificado.
+
+interface NumberDic{
+    [i:string]: number | string;
+}
+let dictionary: NumberDic ={}
+
+dictionary['name'] = 'kalet'
+dictionary['size'] = 23
+
+--Tipos que extienden: Interfaces:
+
+interface Colorful {
+  color: string;
+}
+ 
+interface Circle {
+  radius: number;
+}
+ 
+interface ColorfulCircle extends Colorful, Circle {}
+ 
+const cc: ColorfulCircle = {
+  color: "red",
+  radius: 42,
+};
+
+--Tipos de interseccion: es una forma de unir las propiedades de 2 tipos.
+
+interface Colorful {
+  color: string;
+}
+interface Circle {
+  radius: number;
+}
+ 
+type ColorfulCircle = Colorful & Circle;
+
+Recalcar una extension de interfaz permite crear nuevas propiedades en la interfaz a la cual se ha 
+extendido,un tipo de interseccion no permite hacerlo.
+
+--Tipos genericos para objetos: Esta forma definimos una interfaz o un typo el cual contiene internamente
+tipos genericos.
+
+interface Box<Type> {
+    contents: Type
+}
+
+let boxA: Box<string> ={
+   contents: 'Hello'
+}
+
+--Array Type: El tipo de objeto generico suele ser algun tipo de tipo de 
+contenedor que funciona independientemente del tipo de elemento que contienen.
+
+const l: Array<string> =[1,'j']
+
+
+--ReadonlyArray: Es un tipo especial que define matrices que no pueden cambiarse
+
+function doStuff(values: ReadonlyArray<string>) {
+  // We can read from 'values'...
+  const copy = values.slice();
+  console.log(`The first value is ${values[0]}`);
+
+
+-Type tuple: Este tipo define un array que sabe exactamente cuantos valores tendra internamente
+esto es util en Apis.
+
+const l: [string,number] = ['he',2]
+
+-Se puede hacer destructuracion de tuplas:
+
+function doSomething(stringHash: [string, number]) {
+  const [inputString, hash] = stringHash;
+ 
+  console.log(inputString);
+  }
+
+const ls: [string,...number[]] = ['helo',1,2,3,4,5]
+
+--------------------Generic Types-----------------------
+
+Podria usarse el tipo Any pero correriamos el peligro de la no inferencia de el 
+tipado,tambien uknown pero igualmente puede generar ciertos errores.
+
+La funciones de identidad generica,son funciones las cuales reciben un tipo 
+inferido por la ejecucion de la funcion
+
+
+const identy = <T>(x:T)=>{
+   if(typeof x ==='string'){
+    return x.length
+   }else if(typeof x === 'boolean'){
+    return 'pelotudo'
+   }
+}
+
+console.log(identy('Pelotudo'))
+
+-Interfaz generica: Se puede definir una interfaz generica para firmar una funcion,tambien 
+para tipar un objeto entre otros.
+
+interface getItemFunc<T>{
+    <T>(arg:T): T
+}
+
+function identity<interface getItemFunc<T>{
+    <T>(arg:T): T
+}
+
+function identity<T>(arg:T):T{
+    return arg
+}
+
+let myFunc: getItemFunc<boolean> = identity
+
+console.log(myFunc(true))T>(arg:T):T{
+    return arg
+}
+
+let myFunc: getItemFunc<boolean> = identity
+
+console.log(myFunc(true))
+
+--Clases genericas: Se declaran como interfaces normales.
+
+class GenericNumber<NumType> {
+  zeroValue: NumType;
+  add: (x: NumType, y: NumType) => NumType;
+}
+ 
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function (x, y) {
+  return x + y;
+};
+
+-Parametros de tipo en restricciones genericas:se puede crear una forma de tipar
+a partir de un objeto el con keyof para restringir cualquier otro valor que no este en el 
+objeto.
+
+function getProperty<T, k extends keyof T>(obj: T, key: k){
+    return obj[key]
+}
+
+let x = {a:1,b:2,c:3}
+
+
+console.log(getProperty(x,"a"))
+
+-------------------Type KeyOf-----------------
+
+El tipo keyOf toma un tipo de objeto y produce una cadena o union literal numerica 
+de sus claves.
+
+
+interface User {
+    name: string
+    age: number
+    email: string
+}
+
+type UserKeys = keyof User
+
+const user: User = {
+    name: 'kalet',
+    age:23,
+    email: 'kal@gmail.com',
+}
+
+function isValidAge(user:User, key: UserKeys,value: any):boolean{
+    return user[key] === value
+}
+
+console.log(isValidAge(user,'age',30))
+
+---------------Tipos indexados-----------------
+
+este tipo verific el retorno y el tipo de indice de un objeto,es  muy util para 
+verificar acceso.
+
+type StringDict ={
+    [index:number]: string
+}
+
+const dict: StringDict ={
+    1:"sl",
+    2:"sl"
+}
+
+-------------Conditional Type----------------
+
+los tipos condicionales toman la siguiente forma: 
+SomeType extends OtherType ? TrueType : FalseType;
+
+interface Admin {
+   isAdmin: true
+}
+
+interface NormalUser{
+   isAdmin: false
+}
+
+type User = Admin | NormalUser
+
+type CanEdit<T> = T extends {isAdmin:false} ? true : false
+
+function editPost<T extends  User>(user:T,postId:number){
+  if(user.isAdmin){
+    return false
+  }
+  return true
+}
+
+const user: User = {
+    isAdmin: false
+}
+
+console.log(editPost(user,2))
+
+--Restricciones de tipo condicional.
+
+estas son utiles para especificar que una funcion u objeto puede ser 
+de varios tipos pero no puede ser los 2 a la vez.
+
+type HashLength<T>= T extends {length:number} ? true:false
+
+
+--Tipos distributivos condicionales.
+
+Se dice que son distribuidos cuando la condicion se aplica a cada 
+miembro de una union de tipos.
+
+type MyType<T> = T extends string ? number : boolean;
+
+type Result = MyType<"hello" | true | 42>; 
+// Result es (number | boolean) | boolean | boolean
+
+-------------------Mapped Type---------------
+
+Los Mapped types son un tipo de dato que permite crear un nuevo 
+tipo apartir de un tipo existente.
+
+type OptionalReadOnly<T> = {
+    readonly [P in keyof T]+?: T[P]
+}
+
+interface Person {
+    name: string;
+    age: number;
+}
+
+const partialPerson:OptionalReadOnly<Person> ={
+    name: "juan carlos",
+}
+
+console.log(partialPerson)
+
+Hay cuatro modificadores de mapeo: readonly, ?, + y -.
+
+readonly hace que las propiedades resultantes sean de sólo lectura.
+? hace que las propiedades resultantes sean opcionales.
++ indica que se deben agregar propiedades adicionales al tipo base.
+- indica que se deben eliminar propiedades del tipo base.
+
+--Uso de as: Este sirve para castear,lo que puede ser bueno para crear otro 
+tipo diferente.
+
+interface Gemoetria {
+    lados: number
+}
+
+interface Triangulo extends Gemoetria {
+    base: number
+    altura: number
+}
+
+interface Cuadrado extends Gemoetria{
+    lado: number
+}
+
+function proce(g:Gemoetria){
+    if(g.lados == 4){
+        let cuadrado = g as Cuadrado
+        cuadrado.lado = 4
+    }
+}
+
+
+Nota: podes usarlos con condicionales.
+
+
+----Tipos de plantillas literales.
+
+Los tipos de plantilla se define con `${}` esto sirve para tipar lo que seria
+una cadena de string.
+
+type Email = `${string}@${'gmail' | 'Hotmail'}.${'com' | 'net' | 'org'}`
+
+const login =(email:Email,pass:string)=>{
+    if(email){
+        return email
+    }
+}
+
+console.log(login('kalet@gmail.com','123453'))
+
+----Uniones de cuerdas en tipos.
+
+Las uniones de cadenas (string unions) en TypeScript se refieren a la combinación de dos o más tipos de cadena en una sola unión. 
+
+type Gender = 'male' | 'female' | 'non-binary';
+
+----Inferencia con literales de plantilla.
+
+La inferencia con literales de plantilla en TypeScript es una característica que permite que los tipos de variables, 
+parámetros y resultados de funciones se infieran en tiempo de compilación utilizando literales de plantilla.
+
+function getDate(date: `${number}/${'Mar' | 'Feb'}/${number}`){
+    console.log(date.split('/')[1])
+}
+
+
+----Manipulacion de cadenas intrisecas.
+
+Este sirven para definir cadenas con metodos nativos de javascript a utilizar como
+length, uppercase,etc para crear una cadena que se evalue en tiempo de compilacion.
+
+Uppercase<StringType>
+Convierte cada carácter de la cadena a la versión en mayúsculas.
+
+Uppercase<StringType>
+Convierte cada carácter de la cadena a la versión en mayúsculas.
+
+Lowercase<StringType>
+Convierte cada carácter de la cadena al equivalente en minúsculas.
+
+Capitalize<StringType>
+Convierte el primer carácter de la cadena en un equivalente en mayúsculas.
+
+Uncapitalize<StringType>
+Convierte el primer carácter de la cadena en un equivalente en minúsculas.
+
+
+type ZipCode = `${string & Length<5>}`
+
+type Greeting = string
+
+type Name = Uppercase<Greeting>
+
+const saludo:Name = "LISTO"
+
+console.log(saludo)
+
+---------------Yargs---------------
+
+
+--------------color js--------------
+
+
+-----------inquirer---------------
+
+---------------Node +-------------------
