@@ -657,43 +657,206 @@ Los utility types son un conjunto de tipos predefinidos que proporcionan
 funcionalidades utiles para trabajar con tipos,ya sea cambiando su estructura 
 o creando uno nuevo apartir de ellos.
 
---Awaited<Type>:
+----Awaited<Type>:Tipo predefinido para modelar operaciones como 
+awair en async funciones o el .then()
+
+type A = Awaited<Promise<string>>;
+
+----Partial<Type>:Estable un tipo con todas sus propiedades en opcionales.
+
+type newUser = {
+    name:string
+    age:number
+    description: Array<string>
+}
+
+const user1: Partial<newUser> = {
+    name:'kalet'
+}
+
+--Required<Type>:es lo contrario a Partial Type esta establece 
+todas las propiedades en requeridas.
+
+type newUser = {
+    name:string
+    age?:number
+    description?: Array<string>
+}
+
+const user1: Required<newUser> = {
+    name:'kalet'
+}
+
+
+--Readonly<Type>:contruye un tipo con todas las propiedades en solo lectura,
+osea no se pueden reasignar
+
+type newUser = {
+    name:string
+    age?:number
+    description?: Array<string>
+}
+
+const user1: Readonly<newUser> = {
+    name:'kalet'
+}
+
+user1.name=""
+
+--Record<Keys,Type>: este les da las propiedades de un tipo a otro tipo.
+
+interface catInfo{
+    age:number;
+    breed:string;
+}
+
+type CatName = "miffy"| "boris"
+
+const cats: Record<CatName,catInfo>={
+    miffy: {age:5,breed:"Persian"},
+    boris: {age:2,breed:"Maine Coon"}
+}
+
+console.log(cats.boris)
+
+
+--Pick<Type,Keys>:Crea un nuevo tipo a partir de otro tipo solo que a este se le deben 
+especificar las propiedades.
+
+interface user{
+    name:string
+    age:number
+    description:string
+    token:string
+}
+
+type userAdmin = Pick<user,"name" | "age" | "description">
+
+const user:userAdmin = {
+    name: "k",
+    age: 23,
+    description: "helllooo"
+}
+
+--Omit<Type,keys>:este tipo es como pick solo que este crea un tipo y se le debe
+indicar lo que se quiere omitir.
+
+interface user{
+    name:string
+    age:number
+    description:string
+    token:string
+}
+
+type userAdmin = Partial<Omit<user,'token'>>
+
+const user1: userAdmin ={
+    name: "k"
+}
+
+--Exclude<UnionTyoe,ExcludeMembers>:este genera una union de conjuntos la cual 
+se excluye en sus intersecciones.
+
+type one = 'a' | 'b' | 'c' | 'r'
+type Two = 'e' | 'b' | 'a' | 'j'
+
+type newType = Exclude<one,Two>
+
+const us: newType  = 'c'
+
+--Extract<Type,Union>:es como la contraparte de exclude,este crea apartir de un tipo 
+otro tipo solo que extraelos tipos.
+
+type Animal = 'Cat' | 'Dog' | 'Bird' | 'Elefanth' 
+
+type catOrBird= Extract<Animal , 'Cat' | 'Bird'>
+
+const bird: catOrBird= 'Bird'
+
+--NonNullable<Type>:crea un nuevo tipo exluyendo lo que seria undefined y null.
+
+type exist = string | undefined | null | number
+
+const yes: NonNullable<exist> = 'hi'
+
+--Parameters<Type>:define una tupla apartir de los parametros de una 
+funcion.
+
+function ejemplo(a:string,b:number){
+    return a + b
+}
+
+type Params = Parameters<typeof ejemplo>
+
+const l: Params = ['a',2]
+
+--ConstructorParameters<Type>:es igual que parameters solo que este es especifico para 
+el contructor de el objeto.
+
+
+--ReturnType<Type>:crea un tipo a partir de el tipo de retorno de una 
+funcion.
+
+function suma<T>(arg:T){
+    if(arg){
+        if(typeof arg == "number"){
+            return arg + 23
+        }else if(arg == 'string'){
+            return arg + ' hola'
+        }
+    }
+}
+type sumaResta = ReturnType<typeof suma>
+
+const ty: sumaResta = 'bueno'
+
+--InstanceType<Type>:InstanceType es un tipo genérico que toma una clase como 
+argumento y devuelve el tipo de la instancia de esa clase. 
+
+class Persona {
+  nombre: string;
+  edad: number;
+
+  constructor(nombre: string, edad: number) {
+    this.nombre = nombre;
+    this.edad = edad;
+  }
+}
+
+type PersonaType = InstanceType<typeof Persona>; // Persona
+
+const p: PersonaType = new Persona("Juan", 30);
+
+--ThisParameterType<Type>:obtiene el primer parametro en este caso this
+dela funcion.
+
+function toHex(this:number){
+   return this.toString(16)
+}
+
+function numberTo(n: ThisParameterType<typeof toHex>){
+    return toHex.apply(n)
+}
+
+console.log(numberTo(3))
+
+
+--OmitThisParameter<Type>: es el contrario a ThisParametersType,
+este elimina el parametro this.
+
+function toHex(this: Number) {
+  return this.toString(16);
+}
+ 
+const fiveToHex: OmitThisParameter<typeof toHex> = toHex.bind(5);
+ 
+console.log(fiveToHex());
+
+--ThisType<Type>: ese tipo indica que un tipo this que modifica el objeto en si
+va a ser el mismo objeto y su retorno sera el mismo.
 
 
 
---Partial<Type>:
-
---Required<Type>:
-
---Readonly<Type>:
-
---Record<Keys,Type>:
-
---Pick<Type,Keys>:
-
---Omit<Type,keys>:
-
---Exclude<UnionTyoe,ExcludeMembers>:
-
---Extract<Type,Union>:
-
---NonNullable<Type>:
-
---Parameters<Type>:
-
---ConstructorParameters<Type>:
-
---ReturnType<Type>:
-
---InstanceType<Type>:
-
---ThisParameterType<Type>:
-
---OmitThisParameter<Type>:
-
---OmitThisParameter<Type>:
-
---ThisType<Type>:
 
 
 
