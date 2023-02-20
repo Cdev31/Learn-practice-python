@@ -855,18 +855,103 @@ console.log(fiveToHex());
 --ThisType<Type>: ese tipo indica que un tipo this que modifica el objeto en si
 va a ser el mismo objeto y su retorno sera el mismo.
 
+------------------Clases en TypeScript-------------------
+
+Typescript da soporte a la palabra clave class.
+
+class User{}
+
+Una estructura tipada de una clase basica seria asi:
+
+clas User{
+  name:string
+  age:number
+  constructor(name,age){
+      this.name = name
+      this.age = age
+  }
+}
+
+const user = new User('Ana',23)
+
+Nota: La strictPropertyInitializationconfiguración 
+controla si los campos de clase deben inicializarse en el constructor.
+
+Nota: existe sobrecarga de constructores.
+
+diferencia entre firma de constructores y de funciones:
+
+Los constructores no pueden tener parámetros de tipo; estos pertenecen
+a la declaración de clase externa, de la que aprenderemos más adelante.
+
+Los constructores no pueden tener anotaciones de tipo de devolución: el 
+tipo de instancia de clase es siempre lo que se devuelve
+
+Implements: esta se utiliza para implementar una interfaz en una clase.
+
+interface Pingable {
+  ping(): void;
+}
+ 
+class Sonar implements Pingable {
+  ping() {
+    console.log("ping!");
+  }
+}
+ 
+Nota: el implements clausura no cambia el tipo de la clase.
+ 
+---Anulacion de metodos.
+
+Esta forma anula el comportamiento de un metodo heredado,lo cual hace que el metodo 
+que se hereda pueda cambiar su comportamiento en la clase hija.
 
 
+class Animal {
+  makeSound() {
+    console.log("The animal makes a sound");
+  }
+}
 
+class Cat extends Animal {
+  override makeSound() {
+    console.log("Meow");
+  }
+}
 
+const animal = new Animal();
+animal.makeSound(); // "The animal makes a sound"
+
+const cat = new Cat();
+cat.makeSound(); // "Meow"
+
+---Declaraciones decampo de solo tipo.
+
+cuando extendemos de una clase y en la clase hija queremos cambiar el tipo
+se cambiara el tipo de la clase padre en tiempo de compilacion,generando problemas,
+por eso usamos declare para respetar el tipo de la clase padre.
+
+class Base {
+    name: string = "base"
+}
+
+class Derived extends Base{
+    declare name: "derived"
+}
+
+const d = new Derived()
+console.log(d.name)
 
 
 ---------------Yargs---------------
 
 
+
 --------------color js--------------
 
 
+
 -----------inquirer---------------
+
 
 ---------------Node +-------------------
