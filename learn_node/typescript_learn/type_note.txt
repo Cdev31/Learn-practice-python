@@ -925,7 +925,7 @@ animal.makeSound(); // "The animal makes a sound"
 const cat = new Cat();
 cat.makeSound(); // "Meow"
 
----Declaraciones decampo de solo tipo.
+---Declaraciones de campo de solo tipo.
 
 cuando extendemos de una clase y en la clase hija queremos cambiar el tipo
 se cambiara el tipo de la clase padre en tiempo de compilacion,generando problemas,
@@ -941,6 +941,51 @@ class Derived extends Base{
 
 const d = new Derived()
 console.log(d.name)
+
+----Visibilidad de miembros.
+
+Public: acceso publico tanto a variables como a metodos
+
+class Greeter {
+  public greet() {
+    console.log("hi!");
+  }
+}
+const g = new Greeter();
+g.greet()
+
+Protected: este tipo es como el private solo que permite que subclases 
+puedan usarlo.
+
+class Greeter {
+  public greet() {
+    console.log("Hello, " + this.getName());
+  }
+  protected getName() {
+    return "hi";
+  }
+}
+ 
+Private: este tipo encapsula su uso a nada mas la misma clase 
+internamente.
+
+class MySafe {
+  private secretKey = 12345;
+}
+
+Static: este tipo indica que la variable o metodo de clase puede ser 
+usada directamente desde la clase sin necesidad de instanciar el objeto.
+
+class MyClass {
+  private static x = 0;
+}
+console.log(MyClass.x);
+
+Nota: se puede usar static con private, public y protected
+Nota: existen nombres especiales estaticos que son palabras claves.
+
+
+
 
 
 ---------------Yargs---------------
