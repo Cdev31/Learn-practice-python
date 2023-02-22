@@ -983,9 +983,116 @@ console.log(MyClass.x);
 
 Nota: se puede usar static con private, public y protected
 Nota: existen nombres especiales estaticos que son palabras claves.
+Nota: en typescript no existen clases estaticas.
+
+----Static bloques en clases.
+
+Estos se ejecutan en un bloque statico antes de ser 
+inicializada la clase.
+
+class miClass{
+    static variableS: string
+
+    static{
+        miClass.variableS = "hello"
+        console.log("ejecuntado el bloque")
+    }
+}
+
+console.log(miClass.variableS)
 
 
+---This type.
 
+Este hace referencia al tipo de la clase actual.
+
+-This-based type guards: se utilizan para saber si un objeto 
+es de cierto tipo.
+
+class MyClass {
+  value: number;
+
+  constructor(value: number) {
+    this.value = value;
+  }
+
+  isMyClass(): this is MyClass {
+    return typeof this.value === 'number';
+  }
+}
+
+function exampleFunction(obj: MyClass | any) {
+  if (obj.isMyClass()) {
+    console.log(obj.value.toFixed(2));
+  } else {
+    console.log('Not a MyClass object');
+  }
+}
+
+-Propiedades de parametros.
+
+Esta es una sintaxis especial para convertir un 
+parametro de constructor a una propiedad de clase.
+
+class Params {
+  constructor(
+    public readonly x: number,
+    protected y: number,
+    private z: number
+  ) {
+    // No body necessary
+  }
+}
+const a = new Params(1, 2, 3);
+console.log(a.x);
+
+-Expresion de clase.
+
+Permite crear una constante que contenga la definicion de una clase
+
+const someClass = class<Type> {
+  content: Type;
+  constructor(value: Type) {
+    this.content = value;
+  }
+};
+ 
+const m = new someClass("Hello, world");
+
+-Clase abstracta.
+
+Estas clases son definidas normalmene solo con la palabra
+clave abstract,la diferencia esta en que esta no puede ser 
+instanseada directamente.
+
+abstract class Base {
+  abstract getName(): string;
+ 
+  printName() {
+    console.log("Hello, " + this.getName());
+  }
+}
+ 
+const b = new Base();
+
+-Relaciones entre clase.
+
+Nota: esto es como el tipado nominal de python,el 
+cual por tener atributos o algun parecido,se infiere que son 
+del mismo tipo.
+
+class Point1 {
+  x = 0;
+  y = 0;
+}
+ 
+class Point2 {
+  x = 0;
+  y = 0;
+}
+ 
+// OK
+const p: Point1 = new Point2();
 
 
 ---------------Yargs---------------
