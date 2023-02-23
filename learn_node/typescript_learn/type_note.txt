@@ -1094,6 +1094,77 @@ class Point2 {
 // OK
 const p: Point1 = new Point2();
 
+-------------------Modules-------------------------
+
+Para comenzar se debe conocer la diferencia entre un script y un 
+modulo,el script es ejecutado en su ambio global,todo script definido en el 
+ambito global puede acceder al script,un modulo no,este nada mas contiene 
+definiciones cuyo acceso no es permitido a solo que se permita explicitamente.
+
+--Exportaciones e importaciones de modulos.
+
+Export default: exporta por defecto.
+Export: este exporta con {}
+
+Nota: puedes usar ambos combinados y se puede usar 'as' para indicar un namespace
+
+// @filename: maths.ts
+export const pi = 3.14;
+export default class RandomNumberGenerator {}
+ 
+// @filename: app.ts
+import RandomNumberGenerator, { pi as π } from "./maths.js";
+ 
+RandomNumberGenerator;
+
+// @filename: app.ts
+import * as math from "./maths.js";
+
+-Declaracion deimportacion que solo puede importar tipos.
+
+Esta solo importa los tipos de un modulo nada mas,no 
+todo lo que se encuentre ahi.
+
+import type { Cat, Dog } from "./animal.js";
+
+
+--commonJs.
+
+Esta es una forma de soporte a lo que es la modularizacion de javascript
+con require y module.exports.
+
+//math.ts
+module.exports = {
+  pi: 3.14
+}
+
+//index.ts
+const {pi} = require('./math')
+
+--Opciones de resolucion de modulos.
+
+Las opciones de resolución de módulos de TypeScript son un conjunto de configuraciones que permiten a TypeScript
+determinar cómo se resuelven las importaciones y referencias a otros módulos en el código. Algunas de las opciones
+de resolución de módulos más comunes son:
+
+module: esta opción especifica el sistema de módulos que se utilizará en el proyecto. Algunas opciones comunes son 
+CommonJS, ES2015, AMD y System.
+
+baseUrl: esta opción especifica la ruta base para las importaciones de módulos relativas. Por ejemplo, si se establece 
+en ./src, entonces una importación relativa de ../utils se resolverá a ./src/../utils, lo que apunta a la carpeta utils 
+en el nivel superior del proyecto.
+
+paths: esta opción especifica los alias de ruta para los módulos que se utilizan en las importaciones. Por ejemplo, si se
+establece una entrada @utils en paths para apuntar a la carpeta utils, entonces una importación como import { foo } from '@utils/bar'
+se resolverá a ./utils/bar en el proyecto.
+
+rootDir y outDir: estas opciones especifican los directorios de origen y destino para el proyecto, lo que ayuda a TypeScript
+a determinar cómo se resuelven las importaciones de módulos.
+
+------------------------------------Decoradores-----------------------------
+
+
+
 
 ---------------Yargs---------------
 
