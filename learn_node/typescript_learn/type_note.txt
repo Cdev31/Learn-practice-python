@@ -1164,17 +1164,109 @@ a determinar cómo se resuelven las importaciones de módulos.
 ------------------------------------Decoradores-----------------------------
 
 
+Un decorador es un tipo especial de declaracion que se puede adjuntar 
+a una declaracion de clase,metodo,descriptor de acceso,propiedad o parametro
+
+Hay que diferenciar entre decorador y fabrica de decoradores,un decorador es 
+una funcion que cambia las propiedades ya sea de una clase,funcion entre otras,
+mientras que una fabrica de decoradores es una funcion que devuelve un decorador.
 
 
----------------Yargs---------------
+--Decorador de clase: este decorador tiene como punto de acceso a la clase en si,de ahi puede 
+acceder a sus metodos,propiedades,etc.
+
+function isMoreAge(target:Function){
+    const method = target.prototype.acces
+
+    target.prototype.acces = function(name:string,age:number){
+        if(name){
+            if(age <18){
+                return 'Error es menor de edad'
+            }
+        }
+        return method.apply(this,[name,age])
+    }
+
+}
+@isMoreAge
+class user{
+    acces(name:string,age:number){
+    return `puede entrar ${name} , ya que su edad es: ${age}`
+    }
+}
+const logs = new user()
+console.log(logs.acces('usuer',23))
+console.log(logs.acces('user',7))
+
+Nota: debes usar los tipos como referencia para los decoradores.
+
+--Decorador de metodo: este decorador tiene como punto de acceso a un metodo.
+
+function isRepit(_target:any,_property:string,descriptor:PropertyDescriptor){
+    const metodoOriginal = descriptor.value
+
+    descriptor.value = function(...args:(string | number)[]){
+       if(args){
+        if(args[0] == 'carlos123'){
+            return 'ya existe ese nombre de usuario'
+        }
+       }
+       return metodoOriginal
+    }
+}
+
+class user{
+    @isRepit
+    create(name:string,age:number,role:string){
+        return `bienvenido ${name}`
+    }
+}
+
+const us1 = new user()
+console.log(us1.create('carlos124',23,'admin'))
+console.log(us1.create('carlos123',18,'normal'))
 
 
+--Decorador de acceso.
 
---------------color js--------------
+Este tipo de decorador su punto de acceso es el getter y setter metodo,modificando 
+ya sea logica o funcionamiento.
+
+function convertirAMayusculas(_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+  const metodoOriginal = descriptor.set;
+
+  descriptor.set = function (valor: string) {
+    const valorEnMayusculas = valor.toUpperCase();
+    metodoOriginal.call(this, valorEnMayusculas);
+  };
+
+  return descriptor;
+}
+
+class Persona {
+  private _nombre: string;
+
+  @convertirAMayusculas
+  set nombre(nombre: string) {
+    this._nombre = nombre;
+  }
+
+  get nombre() {
+    return this._nombre;
+  }
+}
+
+const persona = new Persona();
+persona.nombre = 'Juan'; 
+console.log(persona.nombre); 
+
+---Decorador de parametros y de propiedades.
+
+Los decoradores de parametro su punto de acceso es el parametro de una 
+funcion.
+
+Los decoradores de propiedades modifican el comportamiento de las propiedades
+de una clase.
 
 
-
------------inquirer---------------
-
-
----------------Node +-------------------
+Nota: ver mas sobre metadata y decoradores

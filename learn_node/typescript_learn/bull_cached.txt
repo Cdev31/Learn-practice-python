@@ -1,0 +1,95 @@
+------------------Node-Cache------------------------------
+
+instalacion: npm install node-cache --save
+
+const nodeCahe = require('node-cache');
+const myCache = new nodeCahe();
+
+
+stdTTL: Especifica el tiempo de vida en segundos que tendrá cada elemento de 
+caché que se almacene en la memoria. Por defecto, esta opción es cero, lo que significa
+que los elementos de caché no expirarán a menos que se eliminen explícitamente.
+
+checkperiod: Especifica cada cuánto tiempo, en segundos, la caché verificará si hay
+elementos de caché que hayan expirado. Por defecto, esta opción es de 600 segundos (10 minutos).
+
+useClones: Esta opción determina si los elementos de caché se clonarán o no antes de ser almacenados
+en la caché. Si se establece en true, cada vez que se almacena un elemento en la caché, se creará una
+copia del objeto en la memoria, lo que significa que cualquier cambio posterior en el objeto no afectará la
+copia almacenada en la caché. Si se establece en false, la caché almacenará solo una referencia al objeto,
+lo que significa que cualquier cambio en el objeto también afectará al objeto almacenado en la caché.
+
+deleteOnExpire: Esta opción determina si los elementos de caché se eliminarán automáticamente cuando expiren o no.
+Si se establece en true, los elementos de caché se eliminarán automáticamente una vez que hayan expirado. Si se establece en false,
+los elementos de caché no se eliminarán automáticamente después de expirar, y tendrás que eliminarlos manualmente.
+
+enableLegacyCallbacks: Esta opción determina si se utilizarán devoluciones de llamada antiguas en lugar de funciones de sincronización.
+Si se establece en true, se habilitarán las devoluciones de llamada antiguas.
+
+maxKeys: Esta opción establece el número máximo de claves que se pueden almacenar en la caché. Si intentas agregar un nuevo elemento a la
+caché y la caché está llena, se generará un error y la clave no se guardará en la caché. El valor predeterminado de esta opción es -1, lo 
+que significa que no hay límite en la cantidad de claves que se pueden almacenar en la caché.
+
+
+
+
+--------------------------Bull js-------------------------
+
+intalacion: npm install bull --save
+            npm install @types/bull --save-dev
+
+
+------------------------Require and readLine and process------------------------
+
+ReadLine es una libreria que utiliza los procesos de entradas y salidas de la 
+terminal,lo primero que se define es una instancia de createInterface la cual 
+recibe ciertas opciones tanto el punto de entrada y salida entre otros.
+
+Opciones de createInterface: 
+
+prompt: define un prompt de entrada
+terminal:
+historySize: define el numero opcional maximo de elementos que se pueden 
+almacenar en el historial de entrada.
+terminal: define si la entrada y salida debe tratarse como una terminal.
+completer: sirve para definir autocompletado con TAB.
+input y ouput: define la entrada y salida
+
+-Metodos de createInterface:
+
+rl.question(prompt: string, callback: (answer: string) => void): void: muestra un mensaje de texto (el parámetro prompt) al usuario y espera una respuesta, que se pasará como argumento a la función de devolución de llamada (el parámetro callback).
+
+rl.close(): void: cierra la interfaz de línea de comandos.
+
+rl.pause(): void: pausa la entrada de usuario, lo que significa que no se aceptarán más entradas hasta que se llame al método rl.resume().
+
+rl.resume(): void: reanuda la entrada de usuario después de una pausa.
+
+rl.write(data: string, key?: { name: string; }): void: escribe el texto especificado en la consola, donde data es el texto que se debe escribir y key es un objeto opcional que especifica una tecla de modificación (por ejemplo, ctrl, alt, etc.) para agregar al texto.
+
+rl.clearLine(cursor: NodeJS.WritableStream, callback?: () => void): void: borra la línea actual en la salida estándar y se mueve el cursor a la columna inicial. El parámetro cursor es la salida donde se borrará la línea (por defecto, la salida estándar) y callback es una función opcional que se llamará después de borrar la línea.
+
+rl.clearScreenDown(): void: borra la pantalla desde la posición actual del cursor hasta el final de la pantalla.
+
+rl.setPrompt(prompt: string): void: establece el mensaje que se mostrará en el prompt.
+
+rl.prompt(preserveCursor?: boolean): void: muestra el prompt actual y espera a que el usuario escriba una respuesta.
+
+rl.history: un array que contiene el historial de comandos de entrada del usuario.
+
+addKeyListener(key: string, listener: () => void): void: Agrega un escucha de eventos de teclas para la entrada de datos.
+
+removeKeyListener(key: string, listener: () => void): void: Elimina un escucha de eventos de teclas para la entrada de datos.
+
+setPrompt(prompt: string, length?: number): void: Define el prompt (el texto que se muestra antes de la entrada del usuario) con el mensaje especificado en prompt.
+
+clearLine(dir: -1 | 0 | 1, callback?: () => void): void: Borra una línea de entrada de la consola, en la dirección especificada.
+
+clearScreenDown(): void: Borra la pantalla de la consola, eliminando todo lo que esté debajo del cursor.
+
+getCursorPos(callback: (pos: readline.CursorPos) => void): void: Obtiene la posición actual del cursor en la consola.
+
+moveCursor: mueve el cursor a una posición específica en la consola.
+
+
+-Eventos de readLine:
