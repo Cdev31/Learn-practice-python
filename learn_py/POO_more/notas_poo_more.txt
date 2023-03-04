@@ -1,0 +1,188 @@
+----Indice:
+          -Decoradores
+          -Poo
+          -Multiprocessing
+          -Multithreading
+          -Asyncio
+
+----------------------Decoradores-----------------------
+
+
+
+-------------------Orientado a objetos------------------
+
+Existen 4 pilares de la POO estos son:
+
+-Abtraccion: es el proceso de identificar y definir los atributos y 
+metodos esenciales de un objeto(caracteristicas y comportamientos) y 
+luego concentrarse en eso e ignorar el resto.
+
+-Encapsulamiento: el Encapsulamiento es la tecnica de ocultar la 
+complejidad interna de un objeto,permitiendo que solo se acceda a el 
+a traves de una interfaz publica bien definida.
+
+-Herencia: la herencia es la capacidad de una clase de heredar los 
+atributos y metodos de otra clase.
+
+-Polimorfismo: el polimorfismo se refiere a la capacidad de un objeto 
+para tomar muchas formas.
+
+
+--Creacion de clases(Abstraccion,polimorfismo y herencia).
+
+Par crear una clase se utiliza la palabra reservada class name():,se puede
+omitir los parentesis ya que estos se usan para heredar o acceder a el contructor.
+
+Existen propiedades y metodos,estos definen el comportamiento de la clase(objeto),
+es importante saber que se pueden tener propiedades por defecto o pedir que cuando se 
+cree un objeto(instancie) se fuerze agregar las propiedades que yo pida,a eso se le 
+llama metodo constructor,en total de cuentas los metodos son funciones y las propiedades 
+son las variables.
+
+Existen 2 tipos de metodos y 2 tipos de clase.
+
+metodo normal y de clase:un metodo normal es aquel que se utiliza instanciado la clase,mientras 
+que el metodo de clase infiere directamente con la clase internamente.
+
+Clase normal y clase Abstracta: una clase Abstracta es una clase la cual no puede ser instanciada 
+directamente,mientras que la normal si.
+
+ejemplo
+
+//definimos una clase abtracta de la libreria abc
+class User(ABC):
+    name:str = ""
+    surname: str = ""
+    age:int = 0
+    role: str = ""
+
+    def __init__(self,name:str,surname:str,age:int,role:str):
+        self.name = name
+        self.surname = surname
+        self.age = age
+        self.role = role
+    
+    @classmethod
+    def __new__(cls,*args,**kwargs):
+        if cls == User:
+            raise TypeError("La clase no puede ser instanciada ")
+        return super().__new__(cls)
+
+    def viewInventory(self):
+        print("puedes ver el inventario")   
+
+
+class UserNormal(User):
+    role = "Normal"
+    def __init__(self,name,surname,age):
+        super().__init__(name,surname,age,self.role)
+
+
+class UserAdmin(User):
+    role = "Admin"
+    def __init__(self,name,surname,age):
+        super().__init__(name,surname,age,self.role)
+
+    def updateInventoru(self):
+        print("puedes actualizar el inventario")
+
+    def createInventory(self):
+        print("puedes crear productos en el inventario")
+
+    def deleteInventory(self):
+        print("puedes eliminar un producto del inventario")
+
+
+user1 = UserAdmin("kalet","chavez",23)
+print(user1.age)
+print(user1.role)
+user1.viewInventory()
+
+user2 = UserNormal("Ana","Barrientos",21)
+print(user2.name)
+print(user2.role)
+
+--Encapsulamiento(getters,setters).
+
+El Encapsulamiento es una forma de definir el acceso de ciertas propiedades de 
+las claves,aparte define mucho su scoope.
+
+En python tenemos el problema que no podemos definir al 100 porciento tanto
+propiedades privadas como metodos privados,se utiliza cierta convencion,pero no 
+es 100% emcapsulamiento.
+
+Usamos getters y setters para modificar valores los cuales no deben ser modificados 
+directamente.
+
+class User:
+  
+    def __init__(self,name:str,surname:str,Dui:str) -> None:
+        self.name = name
+        self.surname = surname
+        self.__Dui:Final[str] = Dui
+
+    def __setattr__(self,name,value):
+        if name == '_User__Dui':
+            raise AttributeError("no puedes modificar el Dui")
+        else: 
+            super().__setattr__(name,value)
+
+
+
+user1 = User("kalet","chavez","123450-6") 
+user1._User__Dui= "234321-2"
+
+print(user1.__Dui)
+//Esta es una forma de encapsular y hacer una propiedad privada.
+
+
+---Modularizacion(__init__py) y paquetes.
+
+Los modulos son encapsulacion de codigo el cual permite crear codigo 
+en un archivo el cual puede ser utilizado en tro archivo con extension .python
+
+Para modularizar solo se necesita que esten los archivos en la misma 
+carpeta e importar ya sea relativamente o absolutamente.
+
+//operaciones.py 
+def suma(*args):
+    total= 0
+    for arg in args:
+        total = arg + total
+    return total    
+
+def resta(*args):
+    total =0
+    for arg in args:
+        total = arg - total
+    return total    
+
+//index.py
+import operaciones
+#otra forma de importar
+#from .operaciones import suma
+print(operaciones.suma(1,2,34,5))
+
+
+Los paquetes son un conjutno de modulos los cuales pueden ser
+importados y usados en cualquier carpeta,solo se debe crear un archivo 
+__init__.py el cual le dice al interprete de python que es un paquetes
+y se debe tener cuidado con las importaciones relativas y absolutas.
+
+from  Packages.user.product import Product
+from  Packages.products.user import User
+
+user1 = User()
+user1.find()
+user1.create()
+
+product1 = Product()
+product1.create()
+product1.find()
+
+
+
+-----------------------Asincronia----------------------
+
+diferencia entre concurrencia y paralelismo.
+
